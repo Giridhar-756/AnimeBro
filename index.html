@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AnimeBro</title>
+  <style>
+    /* Basic reset and dark mode */
+    body {
+      margin: 0; padding: 20px;
+      background: #121212; color: #eee;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    header {
+      text-align: center; margin-bottom: 20px;
+    }
+    #searchBar {
+      width: 100%; max-width: 400px;
+      padding: 10px; font-size: 16px;
+      border-radius: 5px; border: none;
+      outline: none;
+      margin-top: 10px;
+      background: #222; color: #eee;
+    }
+    #animeGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+      gap: 20px;
+      flex-grow: 1;
+    }
+    .animeCard {
+      background: #222;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .animeCard:hover {
+      transform: scale(1.05);
+    }
+    .animeCard img {
+      width: 100%;
+      object-fit: cover;
+      height: 210px;
+      display: block;
+    }
+    .animeTitle {
+      padding: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      height: 48px;
+      overflow: hidden;
+    }
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: #aaa;
+    }
+    footer a {
+      color: #bbb;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    #subscribeSection {
+      margin-top: 30px;
+      text-align: center;
+    }
+    #emailInput {
+      padding: 10px;
+      max-width: 300px;
+      width: 80%;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+      background: #222; color: #eee;
+    }
+    #subscribeBtn {
+      padding: 10px 20px;
+      margin-left: 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #ff3e00;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #subscribeBtn:hover {
+      background-color: #e03500;
+    }
+    @media(max-width: 600px){
+      #animeGrid {
+        grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
+      }
+    }
+    #helpSection {
+  margin-top: 40px;
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(255, 62, 0, 0.2);
+}
+
+#helpSection h2 {
+  color: #ff3e00;
+  margin-bottom: 10px;
+}
+
+#helpSection a {
+  color: #ff8c42;
+  text-decoration: none;
+}
+
+#helpSection a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  margin-top: 30px;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #aaa;
+  border-top: 1px solid #333;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AnimeBro</h1>
+    <input type="text" id="searchBar" placeholder="Search your anime..." />
+  </header>
+
+  <main id="animeGrid"></main>
+
+  <section id="helpSection">
+  <h2>Need Help?</h2>
+  <p>If you face any issues or want to suggest improvements, feel free to contact us.</p>
+  <p><strong>Email:</strong> <a href="mailto:maxsupersingod@gmail.com">maxsupersingod@gmail.com</a></p>
+</section>
+
+  <footer>
+  <p>Made with ❤️ by <strong>Giridhar.Mandalapu</strong></p>
+  <p>&copy; 2025 AnimeBro. All rights reserved.</p>
+</footer>
+
+
+  <script>
+    const animeList = [
+      { title: "Naruto Shippuden", url: "https://www.crunchyroll.com/naruto-shippuden", img: "https://cdn.myanimelist.net/images/anime/5/17407.jpg" },
+      { title: "Attack on Titan", url: "https://www.crunchyroll.com/attack-on-titan", img: "https://cdn.myanimelist.net/images/anime/10/47347.jpg" },
+      { title: "One Piece", url: "https://www.crunchyroll.com/one-piece", img: "https://cdn.myanimelist.net/images/anime/6/73245.jpg" },
+      { title: "Fullmetal Alchemist: Brotherhood", url: "https://www.crunchyroll.com/fullmetal-alchemist-brotherhood", img: "https://cdn.myanimelist.net/images/anime/1223/96541.jpg" },
+      { title: "Death Note", url: "https://www.crunchyroll.com/death-note", img: "https://cdn.myanimelist.net/images/anime/9/9453.jpg" },
+      { title: "My Hero Academia", url: "https://www.crunchyroll.com/my-hero-academia", img: "https://cdn.myanimelist.net/images/anime/10/78745.jpg" },
+      { title: "Demon Slayer: Kimetsu no Yaiba", url: "https://www.crunchyroll.com/demon-slayer-kimetsu-no-yaiba", img: "https://cdn.myanimelist.net/images/anime/1286/99889.jpg" },
+      { title: "Sword Art Online", url: "https://www.crunchyroll.com/sword-art-online", img: "https://cdn.myanimelist.net/images/anime/11/39717.jpg" },
+      { title: "Hunter x Hunter", url: "https://www.crunchyroll.com/hunter-x-hunter-2011", img: "https://cdn.myanimelist.net/images/anime/1337/99013.jpg" },
+      { title: "Bleach", url: "https://www.crunchyroll.com/bleach", img: "https://cdn.myanimelist.net/images/anime/3/40451.jpg" },
+      { title: "One Punch Man", url: "https://www.crunchyroll.com/one-punch-man", img: "https://cdn.myanimelist.net/images/anime/12/76049.jpg" },
+      { title: "Jujutsu Kaisen", url: "https://www.crunchyroll.com/jujutsu-kaisen", img: "https://cdn.myanimelist.net/images/anime/1171/109222.jpg" },
+      { title: "Steins;Gate", url: "https://www.crunchyroll.com/steinsgate", img: "https://cdn.myanimelist.net/images/anime/5/73199.jpg" },
+      { title: "Fairy Tail", url: "https://www.crunchyroll.com/fairy-tail", img: "https://cdn.myanimelist.net/images/anime/10/73274.jpg" },
+    ];
+
+    const animeGrid = document.getElementById('animeGrid');
+    const searchBar = document.getElementById('searchBar');
+
+    function displayAnime(list) {
+      animeGrid.innerHTML = '';
+      list.forEach(anime => {
+        const card = document.createElement('div');
+        card.className = 'animeCard';
+        card.innerHTML = `
+          <img src="${anime.img}" alt="${anime.title}" />
+          <div class="animeTitle">${anime.title}</div>
+        `;
+        card.addEventListener('click', () => {
+          window.open(anime.url, '_blank');
+        });
+        animeGrid.appendChild(card);
+      });
+    }
+
+    searchBar.addEventListener('input', e => {
+      const filtered = animeList.filter(anime =>
+        anime.title.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      displayAnime(filtered);
+    });
+
+    displayAnime(animeList);
+
+    // Subscribe button alert (no backend)
+    document.getElementById('subscribeBtn').addEventListener('click', () => {
+      const email = document.getElementById('emailInput').value;
+      if (email) {
+        alert(`Thanks for subscribing, ${email}! (Note: Backend not implemented)`);
+        document.getElementById('emailInput').value = '';
+      } else {
+        alert('Please enter a valid email.');
+      }
+    });
+  </script>
+</body>
+</html>
+
