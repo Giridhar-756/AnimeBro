@@ -1,4 +1,4 @@
-import { animeService } from './anime-service.js';
+import { animeService } from './anime-service.js?v=20260813-3';
 const grid=document.querySelector('#animeGrid'), status=document.querySelector('#status'), title=document.querySelector('#resultsTitle'), count=document.querySelector('#resultsCount'), form=document.querySelector('#searchForm'), input=document.querySelector('#searchBar'), dialog=document.querySelector('#detailsDialog'), detail=document.querySelector('#detailsContent');
 const fallback='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="600"%3E%3Crect width="100%25" height="100%25" fill="%23292929"/%3E%3Ctext x="50%25" y="50%25" fill="%23b6afaa" font-family="Arial" font-size="28" text-anchor="middle"%3ENo poster%3C/text%3E%3C/svg%3E';
 function text(el,value){ el.textContent=value; return el; }
