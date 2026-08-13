@@ -1,6 +1,18 @@
 const API = 'https://api.jikan.moe/v4';
 const ANILIST_API = 'https://graphql.anilist.co';
 const CACHE_TTL = 10 * 60 * 1000;
+const FALLBACK_ANIME = [
+  ['Naruto Shippuden','https://cdn.myanimelist.net/images/anime/5/17407.jpg',2007,'TV'],
+  ['Attack on Titan','https://cdn.myanimelist.net/images/anime/10/47347.jpg',2013,'TV'],
+  ['One Piece','https://cdn.myanimelist.net/images/anime/6/73245.jpg',1999,'TV'],
+  ['Fullmetal Alchemist: Brotherhood','https://cdn.myanimelist.net/images/anime/1223/96541.jpg',2009,'TV'],
+  ['Death Note','https://cdn.myanimelist.net/images/anime/9/9453.jpg',2006,'TV'],
+  ['My Hero Academia','https://cdn.myanimelist.net/images/anime/10/78745.jpg',2016,'TV'],
+  ['Demon Slayer: Kimetsu no Yaiba','https://cdn.myanimelist.net/images/anime/1286/99889.jpg',2019,'TV'],
+  ['Hunter x Hunter','https://cdn.myanimelist.net/images/anime/1337/99013.jpg',2011,'TV'],
+  ['Jujutsu Kaisen','https://cdn.myanimelist.net/images/anime/1171/109222.jpg',2020,'TV'],
+  ['One Punch Man','https://cdn.myanimelist.net/images/anime/12/76049.jpg',2015,'TV']
+].map(([title,image,year,type], index) => ({ id:`fallback-${index}`, title, image, year, type, status:'', synopsis:'AnimeBro offline discovery result. Connect to an anime metadata service for full details.', crunchyrollUrl:'' }));
 
 function normalize(item) {
   const external = [...(item.external || []), ...(item.streaming || [])];
@@ -44,7 +56,12 @@ async function aniListRequest(search='') {
 }
 
 async function withFallback(primary, search) {
-  try { return await primary(); } catch { return aniListRequest(search); }
+  try { return await primary(); } catch {
+    try { return await aniListRequest(search); } catch {
+      const term = search.trim().toLowerCase();
+      return term ? FALLBACK_ANIME.filter(anime => anime.title.toLowerCase().includes(term)) : FALLBACK_ANIME;
+    }
+  }
 }
 
 export const animeService = {
